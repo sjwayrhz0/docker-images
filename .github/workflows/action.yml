@@ -1,0 +1,123 @@
+name: github action -> dockerhub
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  start:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Load TAG from GitHub ref
+        run: |
+          TAG="${GITHUB_REF_NAME}" 
+          echo "TAG=$TAG" >> $GITHUB_ENV
+
+          if [[ "$TAG" == test* ]]; then
+            PURE_TAG="${TAG#test}" 
+            PURE_TAG="${PURE_TAG#-}" 
+            if [[ -z "$PURE_TAG" ]]; then
+              PURE_TAG="latest"
+            fi
+            DOCKER_IMAGE="sjwayrhz/test:${PURE_TAG}"
+          else
+            DOCKER_IMAGE="sjwayrhz/docker:$TAG"
+          fi
+          echo "DOCKER_IMAGE=$DOCKER_IMAGE" >> $GITHUB_ENV
+
+      - name: Create data directory
+        run: mkdir -p data
+
+      - name: Disk usage info before
+        run: |
+          echo "=== 磁盘整体使用情况 ==="
+          df -h
+          echo -e "\n=== 工作目录占用 ==="
+          du -sh $GITHUB_WORKSPACE
+
+      - name: Download files from Direct URLs
+        run: |
+          mkdir -p data
+          urls=$(yq '.urls // [.url]' tasks/index.yml)
+          for u in $(echo "$urls" | yq -r '.[]'); do
+            echo "Downloading $u"
+            wget -q --show-progress --progress=dot:giga -P data/ "$u"
+          done
+
+      - name: Disk usage info after
+        run: |
+          echo "=== 磁盘整体使用情况 ==="
+          df -h
+          echo -e "\n=== 工作目录占用 ==="
+          du -sh $GITHUB_WORKSPACE
+
+      - name: Prepare files for Docker
+        run: |
+          cd data
+          TAR_LIST=$(ls *.tar *.tar.gz 2>/dev/null || true)
+
+          if [ -n "$TAR_LIST" ]; then
+            echo "Found tar files: $TAR_LIST"
+            FILE_TO_ADD_LIST=$(echo $TAR_LIST | tr '\n' ' ')
+          else
+            echo "No tar found, creating hsitj.tar"
+            tar -cf hsitj.tar ./*
+            find . ! -name 'hsitj.tar' -type f -delete
+            FILE_TO_ADD_LIST="hsitj.tar"
+          fi
+
+          echo "FILE_TO_ADD_LIST=$FILE_TO_ADD_LIST" >> $GITHUB_ENV
+          cd ..
+
+      - name: Create Dockerfile in data
+        run: |
+          echo "FROM sjwayrhz/webdav:asgi" > data/Dockerfile
+          cd data
+          for f in ${{ env.FILE_TO_ADD_LIST }}; do
+            echo "ADD $f /data" >> Dockerfile
+          done
+          echo 'CMD [ "/app/entrypoint.sh" ]' >> Dockerfile
+          cd ..
+      
+      - name: Prepare clean build context
+        run: |
+          mkdir build
+          cp data/Dockerfile build/
+          for f in $FILE_TO_ADD_LIST; do
+            cp "data/$f" build/
+          done
+      
+      - name: Clean up data directory 
+        run: |
+          echo "Removing data directory to free up disk space..."
+          rm -rf data
+      
+      - name: Disk usage info result
+        run: |
+          echo "=== 磁盘整体使用情况 ==="
+          df -h
+          echo -e "\n=== 工作目录占用 ==="
+          du -sh $GITHUB_WORKSPACE
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: sjwayrhz
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t "${DOCKER_IMAGE}" build
+
+      - name: Push Docker image
+        run: |
+          docker push "${DOCKER_IMAGE}"
