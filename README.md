@@ -8,11 +8,18 @@
 在`.github/workflows/action.yml`中可以定义触发条件  
 
 ```
+标签
 on:
   workflow_dispatch:
   push:
     tags:
       - '*'
+分支
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 ```
 
 workflow_dispatch: 手动执行，Push: 当推送test*标签的时候执行

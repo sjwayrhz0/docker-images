@@ -3,8 +3,8 @@ name: github action -> dockerhub
 on:
   workflow_dispatch:
   push:
-    tags:
-      - '*'
+    branches:
+      - main
 
 jobs:
   start:
@@ -14,14 +14,32 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Load TAG from GitHub ref
+      #- name: Load TAG from GitHub ref
+      #  run: |
+      #    TAG="${GITHUB_REF_NAME}" 
+      #    echo "TAG=$TAG" >> $GITHUB_ENV
+#
+      #    if [[ "$TAG" == test* ]]; then
+      #      PURE_TAG="${TAG#test}" 
+      #      PURE_TAG="${PURE_TAG#-}" 
+      #      if [[ -z "$PURE_TAG" ]]; then
+      #        PURE_TAG="latest"
+      #      fi
+      #      DOCKER_IMAGE="sjwayrhz/test:${PURE_TAG}"
+      #    else
+      #      DOCKER_IMAGE="sjwayrhz/docker:$TAG"
+      #    fi
+      #    echo "DOCKER_IMAGE=$DOCKER_IMAGE" >> $GITHUB_ENV
+      - name: Load TAG from tasks/index.yml
         run: |
-          TAG="${GITHUB_REF_NAME}" 
+          TAG=$(yq -r '.tag // "latest"' tasks/index.yml)
+      
+          echo "Detected TAG: $TAG"
           echo "TAG=$TAG" >> $GITHUB_ENV
-
+      
           if [[ "$TAG" == test* ]]; then
-            PURE_TAG="${TAG#test}" 
-            PURE_TAG="${PURE_TAG#-}" 
+            PURE_TAG="${TAG#test}"
+            PURE_TAG="${PURE_TAG#-}"
             if [[ -z "$PURE_TAG" ]]; then
               PURE_TAG="latest"
             fi
@@ -29,7 +47,9 @@ jobs:
           else
             DOCKER_IMAGE="sjwayrhz/docker:$TAG"
           fi
+
           echo "DOCKER_IMAGE=$DOCKER_IMAGE" >> $GITHUB_ENV
+
 
       - name: Create data directory
         run: mkdir -p data
