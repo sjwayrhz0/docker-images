@@ -30,9 +30,9 @@ jobs:
       #      DOCKER_IMAGE="sjwayrhz/docker:$TAG"
       #    fi
       #    echo "DOCKER_IMAGE=$DOCKER_IMAGE" >> $GITHUB_ENV
-      - name: Load TAG from tasks/index.yml
+      - name: Load TAG from tasks/run.yml
         run: |
-          TAG=$(yq -r '.tag // "latest"' tasks/index.yml)
+          TAG=$(yq -r '.tag // "latest"' tasks/run.yml)
       
           echo "Detected TAG: $TAG"
           echo "TAG=$TAG" >> $GITHUB_ENV
@@ -64,7 +64,7 @@ jobs:
       - name: Download files from Direct URLs
         run: |
           mkdir -p data
-          urls=$(yq '.urls // [.url]' tasks/index.yml)
+          urls=$(yq '.urls // [.url]' tasks/run.yml)
           for u in $(echo "$urls" | yq -r '.[]'); do
             echo "Downloading $u"
             wget -q --show-progress --progress=dot:giga -P data/ "$u"

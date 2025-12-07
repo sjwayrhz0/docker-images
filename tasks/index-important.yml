@@ -1,0 +1,19 @@
+- name: 痛苦的回忆
+  parts:
+    - tag: hsitj
+      url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=hsitj
+
+- name: 制作影音的好帮手
+  parts:
+    - tag: VEGAS-Pro-21.0-Build-187
+      url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=VEGAS-Pro-21.0-Build-187
+
+- name: 华严经
+  parts:
+    - tag: huayanjing
+      url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=huayanjing
+
+- name: 鹤翔庄气功
+  parts:
+    - tag: hexiangzhuang
+      url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=hexiangzhuang
