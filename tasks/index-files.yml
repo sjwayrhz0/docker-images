@@ -19,3 +19,6 @@
 - name: Win10_LTSC
   url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=cn_windows_10_enterprise_ltsc_2019_x64_dvd_d17070a8.iso
 
+- name: Win11_LTSC
+  url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=zh-cn_windows_11_enterprise_ltsc_2024_x64_dvd_cff9cd2d.iso
+
