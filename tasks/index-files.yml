@@ -13,3 +13,6 @@
 - name: Win10_LTSC
   url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=Win10_LTSC_OVA
 
+- name: windows_7
+  url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=cn_windows_7_ultimate_with_sp1_x64_dvd_u_677408.iso
+
