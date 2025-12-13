@@ -10,9 +10,12 @@
 - name: 使命召唤20 现代战争3
   url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=Call.of.Duty.Modern.Warfare.III.Campaign.Only-InsaneRamZes
 
-- name: Win10_LTSC
+- name: Win10_LTSC_OVA
   url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=Win10_LTSC_OVA
 
 - name: windows_7
   url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=cn_windows_7_ultimate_with_sp1_x64_dvd_u_677408.iso
+
+- name: Win10_LTSC
+  url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=cn_windows_10_enterprise_ltsc_2019_x64_dvd_d17070a8.iso
 
