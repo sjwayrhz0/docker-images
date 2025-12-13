@@ -1,0 +1,15 @@
+- name: 铁甲小宝
+  url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=tjxb
+
+- name: 犬夜叉
+  url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=qyc
+
+- name: AA 3.5.0.0 - Playwith Taiwan
+  url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=aa-part
+
+- name: 使命召唤20 现代战争3
+  url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=Call.of.Duty.Modern.Warfare.III.Campaign.Only-InsaneRamZes
+
+- name: Win10_LTSC
+  url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=Win10_LTSC_OVA
+
