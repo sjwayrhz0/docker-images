@@ -23,5 +23,9 @@
   url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=zh-cn_windows_11_enterprise_ltsc_2024_x64_dvd_cff9cd2d.iso
 
 - name: javascript-tutorial
-- url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=javascript-tutorial
+  url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=javascript-tutorial
+
+- name: go-tutorial
+  url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=go-tutorial
+
 
