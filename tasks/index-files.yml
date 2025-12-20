@@ -28,4 +28,11 @@
 - name: go-tutorial
   url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=go-tutorial
 
+- name: 不负如来不负卿
+  url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=bfrlbfq
+  
+- name: 从当下出发
+  url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=cdxcf
 
+- name: 西游记
+  url: https://hub.docker.com/r/sjwayrhz/docker/tags?name=journey_to_the_west
